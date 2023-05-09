@@ -72,3 +72,20 @@ export const addSongs = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteSongs = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deleteSong = await supabase.from("Songs").delete().match({ id: id });
+    return success({
+      res,
+      message: "Song deleted succesfully",
+      data: deleteSong.data,
+    });
+  } catch (error) {
+    return failure({
+      res,
+      message: error,
+    });
+  }
+};
