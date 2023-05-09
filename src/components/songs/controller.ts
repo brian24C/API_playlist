@@ -32,3 +32,26 @@ export const findOneSong = async (
     return failure({ res, message: error });
   }
 };
+
+export const updateSong = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    const { body } = req;
+
+    const { data } = await supabase
+      .from("Songs")
+      .update({ ...body })
+      .match({ id })
+      .select();
+
+    if (data?.length === 0) {
+      return failure({ res, message: "Song not exist" });
+    }
+    return success({ res, message: "Song updated successfully", data });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
