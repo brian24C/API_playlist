@@ -55,3 +55,20 @@ export const updateSong = async (
     return failure({ res, message: error });
   }
 };
+
+export const addSongs = async (req: Request, res: Response) => {
+  try {
+    const { body } = req;
+    const addSong = await supabase.from("Songs").insert(body).select();
+    return success({
+      res,
+      message: "Song added succesfully",
+      data: addSong.data,
+    });
+  } catch (error) {
+    return failure({
+      res,
+      message: error,
+    });
+  }
+};
