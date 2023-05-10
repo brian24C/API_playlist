@@ -59,7 +59,8 @@ export const updateSong = async (
 export const addSongs = async (req: Request, res: Response) => {
   try {
     const { body } = req;
-    const addSong = await supabase.from("Songs").insert(body).select();
+    const addSong = await supabase.from("songs").insert(body).select();
+    console.log(addSong);
     return success({
       res,
       message: "Song added succesfully",
