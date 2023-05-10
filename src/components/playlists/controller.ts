@@ -32,7 +32,10 @@ export const findPlaylist = async (
   }
 };
 
-export const createPlaylist = async (req: Request, res: Response) => {
+export const createPlaylist = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { body } = req;
     const playlist = await prisma.playlist.create({
@@ -48,5 +51,29 @@ export const createPlaylist = async (req: Request, res: Response) => {
     });
   } catch (error) {
     return failure({ res, message: error });
+  }
+};
+
+export const deletePlaylist = async (
+  _req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = _req.params;
+
+    const deletePlaylist = await prisma.playlist.delete({
+      where: { id: Number(id) },
+    });
+
+    return success({
+      res,
+      message: `Playlist with id ${id} has been deleted.`,
+      data: deletePlaylist,
+    });
+  } catch (error) {
+    return failure({
+      res,
+      message: error,
+    });
   }
 };
