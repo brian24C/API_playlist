@@ -32,6 +32,25 @@ export const findPlaylist = async (
   }
 };
 
+export const findOnePlaylist = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id: number = parseInt(req.params.id);
+
+    const Playlist = await prisma.playlist.findFirst({ where: { id } });
+    console.log(Playlist);
+    if (Playlist === null) {
+      return failure({ res, message: "Playlist not found" });
+    }
+
+    return success({ res, message: "Playlist found", data: Playlist });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
 export const createPlaylist = async (
   req: Request,
   res: Response
@@ -70,6 +89,95 @@ export const deletePlaylist = async (
       message: `Playlist with id ${id} has been deleted.`,
       data: deletePlaylist,
     });
+  } catch (error) {
+    return failure({
+      res,
+      message: error,
+    });
+  }
+};
+
+export const updatePlaylisst = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    const { body } = req;
+
+    const data = await prisma.playlist.update({
+      where: { id },
+      data: body,
+    });
+
+    return success({ res, message: "Playlist updated successfully", data });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+//Table SongsOnPlaylist
+
+export const seeSongsOnPlaylist = async (
+  _req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const songOnPlaylist = await prisma.songsOnPlaylist.findMany();
+
+    return success({ res, data: songOnPlaylist });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+export const addSongsOnPlaylist = async (req: Request, res: Response) => {
+  try {
+    const { body } = req;
+    const songOnPlaylist = await prisma.songsOnPlaylist.create({
+      data: {
+        ...body,
+      },
+    });
+
+    return success({
+      status: 201,
+      res,
+      message: "Playlist added succesfully to the playlist",
+      data: songOnPlaylist,
+    });
+  } catch (error) {
+    return failure({
+      res,
+      message: error,
+    });
+  }
+};
+
+export const deleteSongFromPlaylist = async (
+  _req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id_song, id_playlist } = _req.params;
+    const deletedSongOnPlaylist = await prisma.songsOnPlaylist.deleteMany({
+      where: { id_song: Number(id_song), id_playlist: Number(id_playlist) },
+    });
+
+    console.log(deletedSongOnPlaylist);
+
+    if (deletedSongOnPlaylist) {
+      return success({
+        res,
+        message: `Song with id ${id_song} has been deleted from playlist ${id_playlist}.`,
+        data: deletedSongOnPlaylist,
+      });
+    } else {
+      return res.status(404).json({
+        ok: false,
+        message: `Song with id ${id_song} on playlist ${id_playlist} not found.`,
+      });
+    }
   } catch (error) {
     return failure({
       res,
