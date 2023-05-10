@@ -75,6 +75,7 @@ export const addSongs = async (req: Request, res: Response) => {
     });
 
     return success({
+      status: 201,
       res,
       message: "Song added succesfully",
       data: data,

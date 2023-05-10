@@ -31,3 +31,22 @@ export const findPlaylist = async (
     return failure({ res, message: error });
   }
 };
+
+export const createPlaylist = async (req: Request, res: Response) => {
+  try {
+    const { body } = req;
+    const playlist = await prisma.playlist.create({
+      data: {
+        ...body,
+      },
+    });
+    return success({
+      status: 201,
+      res,
+      data: playlist,
+      message: "Playlist created successfully",
+    });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
