@@ -18,7 +18,7 @@ export const findPlaylist = async (
                 id: true,
                 name: true,
                 link: true,
-                createdBy: true,
+                recommendedBy: true,
               },
             },
           },
