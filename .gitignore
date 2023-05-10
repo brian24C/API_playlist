@@ -128,7 +128,7 @@ out
 
 # https://nextjs.org/blog/next-9-1#public-directory-support
 
-# public
+public
 
 # vuepress build output
 
@@ -183,3 +183,4 @@ out
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+.vercel
