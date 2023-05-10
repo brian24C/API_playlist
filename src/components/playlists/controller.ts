@@ -40,7 +40,7 @@ export const findOnePlaylist = async (
     const id: number = parseInt(req.params.id);
 
     const Playlist = await prisma.playlist.findFirst({ where: { id } });
-    console.log(Playlist);
+
     if (Playlist === null) {
       return failure({ res, message: "Playlist not found" });
     }
@@ -122,9 +122,12 @@ export const seeSongsOnPlaylist = async (
   _req: Request,
   res: Response
 ): Promise<Response> => {
+  console.log("llego");
   try {
-    const songOnPlaylist = await prisma.songsOnPlaylist.findMany();
+    console.log("llego");
+    const songOnPlaylist = await prisma.songsOnPlaylist.findMany({});
 
+    console.log(songOnPlaylist);
     return success({ res, data: songOnPlaylist });
   } catch (error) {
     return failure({ res, message: error });
@@ -155,18 +158,16 @@ export const addSongsOnPlaylist = async (req: Request, res: Response) => {
 };
 
 export const deleteSongFromPlaylist = async (
-  _req: Request,
+  req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const { id_song, id_playlist } = _req.params;
+    const { id_song, id_playlist } = req.params;
     const deletedSongOnPlaylist = await prisma.songsOnPlaylist.deleteMany({
       where: { id_song: Number(id_song), id_playlist: Number(id_playlist) },
     });
 
-    console.log(deletedSongOnPlaylist);
-
-    if (deletedSongOnPlaylist) {
+    if (deletedSongOnPlaylist.count > 0) {
       return success({
         res,
         message: `Song with id ${id_song} has been deleted from playlist ${id_playlist}.`,
