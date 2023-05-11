@@ -13,6 +13,7 @@ datasource db {
 model Song {
   id              Int               @id @default(autoincrement())
   name            String
+  artist          String?
   link            String?
   recommendedBy   String?
   created_at      DateTime          @default(now())
@@ -22,9 +23,10 @@ model Song {
 }
 
 model Playlist {
-  id    Int               @id @default(autoincrement())
-  name  String
-  songs SongsOnPlaylist[]
+  id        Int               @id @default(autoincrement())
+  name      String
+  CreatedBy String?
+  songs     SongsOnPlaylist[]
 
   @@map("playlists")
 }
