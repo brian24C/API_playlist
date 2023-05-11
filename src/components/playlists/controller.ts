@@ -39,7 +39,23 @@ export const findOnePlaylist = async (
   try {
     const id: number = parseInt(req.params.id);
 
-    const Playlist = await prisma.playlist.findFirst({ where: { id } });
+    const Playlist = await prisma.playlist.findFirst({
+      where: { id },
+      include: {
+        songs: {
+          select: {
+            song: {
+              select: {
+                id: true,
+                name: true,
+                link: true,
+                recommendedBy: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
     if (Playlist === null) {
       return failure({ res, message: "Playlist not found" });
