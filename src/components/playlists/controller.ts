@@ -17,6 +17,7 @@ export const findPlaylist = async (
               select: {
                 id: true,
                 name: true,
+                artist: true,
                 link: true,
                 recommendedBy: true,
               },
@@ -48,6 +49,7 @@ export const findOnePlaylist = async (
               select: {
                 id: true,
                 name: true,
+                artist: true,
                 link: true,
                 recommendedBy: true,
               },
