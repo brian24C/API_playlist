@@ -27,7 +27,7 @@ export const findPlaylist = async (
       },
     });
 
-    return success({ res, data: playlists });
+    return success({ res, dataTotal: playlists });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -63,7 +63,7 @@ export const findOnePlaylist = async (
       return failure({ res, message: "Playlist not found" });
     }
 
-    return success({ res, message: "Playlist found", data: Playlist });
+    return success({ res, message: "Playlist found", dataTotal: Playlist });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -83,7 +83,7 @@ export const createPlaylist = async (
     return success({
       status: 201,
       res,
-      data: playlist,
+      dataTotal: playlist,
       message: "Playlist created successfully",
     });
   } catch (error) {
@@ -105,7 +105,7 @@ export const deletePlaylist = async (
     return success({
       res,
       message: `Playlist with id ${id} has been deleted.`,
-      data: deletePlaylist,
+      dataTotal: deletePlaylist,
     });
   } catch (error) {
     return failure({
@@ -128,7 +128,11 @@ export const updatePlaylisst = async (
       data: body,
     });
 
-    return success({ res, message: "Playlist updated successfully", data });
+    return success({
+      res,
+      message: "Playlist updated successfully",
+      dataTotal: data,
+    });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -146,7 +150,7 @@ export const seeSongsOnPlaylist = async (
     const songOnPlaylist = await prisma.songsOnPlaylist.findMany({});
 
     console.log(songOnPlaylist);
-    return success({ res, data: songOnPlaylist });
+    return success({ res, dataTotal: songOnPlaylist });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -165,7 +169,7 @@ export const addSongsOnPlaylist = async (req: Request, res: Response) => {
       status: 201,
       res,
       message: "Playlist added succesfully to the playlist",
-      data: songOnPlaylist,
+      dataTotal: songOnPlaylist,
     });
   } catch (error) {
     return failure({
@@ -189,7 +193,7 @@ export const deleteSongFromPlaylist = async (
       return success({
         res,
         message: `Song with id ${id_song} has been deleted from playlist ${id_playlist}.`,
-        data: deletedSongOnPlaylist,
+        dataTotal: deletedSongOnPlaylist,
       });
     } else {
       return res.status(404).json({

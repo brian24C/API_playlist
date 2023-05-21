@@ -12,7 +12,7 @@ export const findAllSongs = async (
     //const Songs = await supabase.from("songs").select("*");
     const Songs = await prisma.song.findMany({});
 
-    return success({ res, data: Songs });
+    return success({ res, dataTotal: Songs });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -31,7 +31,7 @@ export const findOneSong = async (
       return failure({ res, message: "Song not found" });
     }
 
-    return success({ res, message: "Song found", data: Song });
+    return success({ res, message: "Song found", dataTotal: Song });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -60,7 +60,11 @@ export const updateSong = async (
     // if (data === null) {
     //   return failure({ res, message: "Song not exist" });
     // }
-    return success({ res, message: "Song updated successfully", data });
+    return success({
+      res,
+      message: "Song updated successfully",
+      dataTotal: data,
+    });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -78,7 +82,7 @@ export const addSongs = async (req: Request, res: Response) => {
       status: 201,
       res,
       message: "Song added succesfully",
-      data: data,
+      dataTotal: data,
     });
   } catch (error) {
     return failure({
@@ -101,7 +105,7 @@ export const deleteSongs = async (req: Request, res: Response) => {
     return success({
       res,
       message: "Song deleted succesfully",
-      data: deleteSong,
+      dataTotal: deleteSong,
     });
   } catch (error) {
     return failure({
