@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { uploadImage } from "./controller";
+import * as controller from "./controller";
 
 const imageRouter: Router = Router();
-imageRouter.post("/", uploadImage);
+imageRouter.post("/", controller.uploadImage);
+imageRouter.get("/load", controller.getImage);
 
 export default imageRouter;

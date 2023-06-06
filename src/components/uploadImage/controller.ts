@@ -10,7 +10,7 @@ export const uploadImage = async (
   try {
     const { src, height, width } = req.body;
 
-    const folder = `/cules-uploader`;
+    const folder = `/playlist-uploader`;
     const imageConfig = {
       width,
       height,
@@ -21,6 +21,23 @@ export const uploadImage = async (
     const uploadRes = await cloudinary.uploader.upload(src, imageConfig);
 
     return success({ res, dataTotal: uploadRes });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+export const getImage = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { resources } = await cloudinary.search
+      .expression("folder:playlist-uploader")
+      .sort_by("created_at", "desc")
+      .max_results(1)
+      .execute();
+
+    return success({ res, dataTotal: resources });
   } catch (error) {
     return failure({ res, message: error });
   }
