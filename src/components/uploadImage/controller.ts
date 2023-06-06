@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { success, failure } from "../../responses";
-import { PrismaClient } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
 
 export const uploadImage = async (
@@ -38,6 +37,21 @@ export const getImage = async (
       .execute();
 
     return success({ res, dataTotal: resources });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+export const deleteImage = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const folder = "playlist-uploader/";
+    const publicId = req.params.publicId;
+    const imageDelete = await cloudinary.uploader.destroy(folder + publicId);
+
+    return success({ res, dataTotal: imageDelete });
   } catch (error) {
     return failure({ res, message: error });
   }
