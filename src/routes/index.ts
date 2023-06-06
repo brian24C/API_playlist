@@ -4,6 +4,7 @@ import * as ROUTES from "../components";
 const _routes: [string, Router][] = [
   ["song", ROUTES.SongRouter],
   ["playlist", ROUTES.playlistRouter],
+  ["upload", ROUTES.imageRouter],
 ];
 
 const routes = (app: Application): void => {

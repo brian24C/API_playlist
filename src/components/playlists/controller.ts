@@ -144,12 +144,8 @@ export const seeSongsOnPlaylist = async (
   _req: Request,
   res: Response
 ): Promise<Response> => {
-  console.log("llego");
   try {
-    console.log("llego");
     const songOnPlaylist = await prisma.songsOnPlaylist.findMany({});
-
-    console.log(songOnPlaylist);
     return success({ res, dataTotal: songOnPlaylist });
   } catch (error) {
     return failure({ res, message: error });
